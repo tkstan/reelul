@@ -5,13 +5,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: '#0A0C12',
-        mist: '#8A90A2',
-        line: '#1E2333',
-        accent: '#4F7CFF'
+        paper: 'var(--paper)',
+        'paper-soft': 'var(--paper-soft)',
+        ink: 'var(--ink)',
+        'ink-muted': 'var(--ink-muted)',
+        line: 'var(--line)',
+        accent: 'var(--accent)',
+        'accent-soft': 'var(--accent-soft)'
       },
       boxShadow: {
-        soft: '0 10px 40px rgba(15, 23, 42, 0.18)'
+        soft: '0 16px 32px rgba(0, 0, 0, 0.3)'
       }
     }
   },

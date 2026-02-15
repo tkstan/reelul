@@ -2,39 +2,50 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { navItems } from '@/lib/content';
+import { Container } from '@/components/ui/container';
+import { Button } from '@/components/ui/button';
+
+const onePageNav = [
+  { href: '/#accueil', label: 'Accueil' },
+  { href: '/#about', label: 'À propos' },
+  { href: '/#evenements', label: 'Événements' },
+  { href: '/#executif', label: 'Exécutif' },
+  { href: '/#heritage', label: 'Héritage' },
+  { href: '/#contact', label: 'Nous joindre' }
+];
 
 export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line/80 bg-ink/80 backdrop-blur-xl">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-8" aria-label="Navigation principale">
-        <Link href="/" className="text-sm font-semibold tracking-[0.2em] text-white">
-          RÉEL
-        </Link>
-        <ul className="hidden gap-6 text-sm md:flex">
-          {navItems.map((item) => {
-            const active = pathname === item.href;
-            return (
+    <header className="sticky top-0 z-50 border-b border-line bg-ink/90 backdrop-blur-xl">
+      <Container className="py-3">
+        <div className="flex items-center justify-between gap-4">
+          <Link href="/#accueil" className="font-display text-2xl uppercase tracking-[0.12em] text-paper">
+            RÉEL
+          </Link>
+          <Button href="/#contact" className="hidden md:inline-flex">
+            Rejoindre
+          </Button>
+        </div>
+
+        <nav className="mt-3 overflow-x-auto pb-1" aria-label="Navigation principale">
+          <ul className="flex min-w-max items-center gap-5 pr-4">
+            {onePageNav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`transition-colors hover:text-white ${active ? 'text-white' : 'text-mist'}`}
+                  className={`text-xs font-semibold uppercase tracking-[0.14em] transition ${
+                    pathname === '/' && item.href.includes('#accueil') ? 'text-accent' : 'text-paper/70 hover:text-paper'
+                  }`}
                 >
                   {item.label}
                 </Link>
               </li>
-            );
-          })}
-        </ul>
-        <Link
-          href="/contact"
-          className="rounded-full border border-accent/40 bg-accent/15 px-4 py-2 text-xs font-semibold text-accent transition hover:bg-accent/25"
-        >
-          Rejoindre
-        </Link>
-      </nav>
+            ))}
+          </ul>
+        </nav>
+      </Container>
     </header>
   );
 }

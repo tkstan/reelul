@@ -1,62 +1,154 @@
 import { EventCard } from '@/components/event-card';
+import { ExecutiveCard } from '@/components/executive-card';
 import { MediaPlaceholder } from '@/components/media-placeholder';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Label } from '@/components/ui/label';
-import { Section } from '@/components/ui/section';
-import { events, partners } from '@/lib/content';
+import { Timeline } from '@/components/ui/timeline';
+import { events, executives, partners, timeline } from '@/lib/content';
 
 export default function HomePage() {
   return (
     <>
-      <section className="border-b border-line bg-[linear-gradient(160deg,#f8f4ee_0%,#f0e8de_52%,#f8f4ee_100%)] py-20 md:py-28">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-            <div className="space-y-7">
-              <Label>Écosystème entrepreneurial UL</Label>
-              <h1 className="display-title max-w-4xl text-6xl leading-[0.9] text-ink md:text-8xl">
-                Événements et ressources pour futurs entrepreneurs
-              </h1>
-              <p className="max-w-2xl text-lg leading-relaxed text-ink-muted">
-                Le Regroupement des Étudiants Entrepreneurs de l’Université Laval fait rayonner la culture
-                entrepreneuriale sur le campus et connecte les talents au monde des affaires.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Button href="/events">Découvrir les événements</Button>
-                <Button href="/heritage" kind="ghost">
-                  Explorer Héritage Entrepreneuriat
-                </Button>
-              </div>
+      <section id="accueil" className="relative min-h-[92vh] overflow-hidden border-b border-line bg-ink text-paper">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(236,242,255,0.18),transparent_38%),linear-gradient(180deg,#223559_0%,#162443_42%,#101a32_100%)]" />
+        <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:52px_52px]" />
+
+        <Container className="relative z-10 flex min-h-[92vh] flex-col justify-between py-10 md:py-16">
+          <div className="flex items-center justify-between text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-paper/75">
+            <p>Unrehearsed. Unscripted. Impact.</p>
+            <p className="hidden md:block">[ Spotify ] &nbsp; [ Apple Podcast ] &nbsp; [ YouTube ]</p>
+          </div>
+
+          <div className="space-y-6 pb-10 md:pb-16">
+            <Label className="text-paper/80">Écosystème entrepreneurial UL</Label>
+            <h1 className="display-title animate-in-view max-w-5xl text-7xl leading-[0.82] text-paper md:text-[11rem]">
+              RÉEL
+            </h1>
+            <p className="max-w-2xl text-base leading-relaxed text-paper/80 md:text-lg">
+              Événements et ressources pour futurs entrepreneurs. Le Regroupement des Étudiants Entrepreneurs de
+              l’Université Laval connecte la communauté étudiante au monde des affaires.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Button href="#evenements">Voir les événements</Button>
+              <Button href="#heritage" kind="ghost" className="border-paper/35 text-paper hover:border-paper hover:text-paper">
+                Découvrir Héritage
+              </Button>
             </div>
-            <MediaPlaceholder label="Membres du RÉEL en événement" className="h-[24rem] shadow-soft" />
           </div>
         </Container>
       </section>
 
-      <Section
-        label="Highlights"
-        title="Ce qui vous attend"
-        intro="Une programmation concrète pour apprendre, connecter et lancer des projets."
-      >
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {events.map((event) => (
-            <EventCard key={event.title} {...event} />
-          ))}
-        </div>
-      </Section>
+      <section id="about" className="border-b border-line bg-[#071331] py-16 text-paper md:py-24">
+        <Container>
+          <Label className="text-paper/70">À propos</Label>
+          <div className="mt-6 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+            <h2 className="display-title animate-in-view text-5xl leading-[0.9] md:text-7xl">
+              Après des années à coacher des entrepreneur·e·s, on continue à connecter les idées aux actions.
+            </h2>
+            <MediaPlaceholder label="Portraits de la communauté RÉEL" className="h-72 border-paper/20 bg-[linear-gradient(160deg,#31466f_0%,#23365e_100%)] text-paper/70" />
+          </div>
+          <div className="mt-8">
+            <Timeline items={timeline} tone="dark" />
+          </div>
+        </Container>
+      </section>
 
-      <Section label="Partenaires" title="Merci à nos partenaires officiels">
-        <div className="grid gap-0 border border-line md:grid-cols-2 xl:grid-cols-4">
-          {partners.map((partner) => (
-            <p
-              key={partner}
-              className="border-b border-line px-6 py-6 text-sm font-semibold uppercase tracking-[0.08em] text-ink md:border-r md:last:border-r-0 md:[&:nth-last-child(-n+2)]:border-b-0 xl:border-b-0"
-            >
-              {partner}
+      <section id="evenements" className="bg-paper py-16 md:py-24">
+        <Container>
+          <header className="mb-10 max-w-3xl space-y-4 md:mb-14">
+            <Label>Événements</Label>
+            <h2 className="display-title animate-in-view text-5xl leading-[0.9] text-ink md:text-7xl">
+              Conférences, réseautage et expériences à impact
+            </h2>
+            <p className="text-base leading-relaxed text-ink-muted md:text-lg">
+              Une programmation concrète pour apprendre, connecter et lancer des projets.
             </p>
-          ))}
-        </div>
-      </Section>
+          </header>
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {events.map((event) => (
+              <EventCard key={event.title} {...event} />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="executif" className="border-y border-line bg-paper-soft py-16 md:py-24">
+        <Container>
+          <header className="mb-10 max-w-3xl space-y-4 md:mb-14">
+            <Label>Exécutif</Label>
+            <h2 className="display-title animate-in-view text-5xl leading-[0.9] text-ink md:text-7xl">
+              Une équipe engagée pour activer l’ambition étudiante
+            </h2>
+          </header>
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            {executives.map((member) => (
+              <ExecutiveCard key={member.name} {...member} />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="heritage" className="bg-paper py-16 md:py-24">
+        <Container>
+          <div className="grid gap-8 border border-line bg-paper p-8 shadow-soft lg:grid-cols-[1fr_0.9fr] lg:items-center">
+            <div className="space-y-4">
+              <Label>Héritage Entrepreneuriat</Label>
+              <h2 className="display-title animate-in-view text-5xl leading-[0.9] text-ink md:text-7xl">
+                Une plateforme éducative pour démocratiser le savoir entrepreneurial
+              </h2>
+              <p className="leading-relaxed text-ink-muted">
+                Explorez un contenu structuré autour d’expériences terrain, de perspectives locales et de ressources
+                concrètes pour passer de l’idée à l’exécution avec plus de clarté.
+              </p>
+              <Button href="https://www.heritageentrepreneuriat.ca/">Accéder à la plateforme</Button>
+            </div>
+            <MediaPlaceholder label="Plateforme Héritage Entrepreneuriat" className="h-80" />
+          </div>
+        </Container>
+      </section>
+
+      <section id="contact" className="border-t border-line bg-paper-soft py-16 md:py-24">
+        <Container>
+          <header className="mb-10 max-w-3xl space-y-4">
+            <Label>Nous joindre</Label>
+            <h2 className="display-title animate-in-view text-5xl leading-[0.9] text-ink md:text-7xl">
+              Parlez-nous de votre projet ou d’une collaboration
+            </h2>
+          </header>
+          <form className="grid gap-5 border border-line bg-paper p-8 md:grid-cols-2" aria-label="Formulaire de contact">
+            <label className="space-y-2 text-xs font-semibold uppercase tracking-[0.1em] text-ink-muted">
+              Prénom et nom
+              <input className="w-full border border-line bg-paper px-4 py-3 text-ink outline-none transition focus:border-accent" name="name" type="text" required />
+            </label>
+            <label className="space-y-2 text-xs font-semibold uppercase tracking-[0.1em] text-ink-muted">
+              Courriel
+              <input className="w-full border border-line bg-paper px-4 py-3 text-ink outline-none transition focus:border-accent" name="email" type="email" required />
+            </label>
+            <label className="space-y-2 text-xs font-semibold uppercase tracking-[0.1em] text-ink-muted md:col-span-2">
+              Sujet
+              <input className="w-full border border-line bg-paper px-4 py-3 text-ink outline-none transition focus:border-accent" name="subject" type="text" required />
+            </label>
+            <label className="space-y-2 text-xs font-semibold uppercase tracking-[0.1em] text-ink-muted md:col-span-2">
+              Message
+              <textarea className="min-h-36 w-full border border-line bg-paper px-4 py-3 text-ink outline-none transition focus:border-accent" name="message" required />
+            </label>
+            <div className="md:col-span-2">
+              <Button type="submit">Envoyer le message</Button>
+            </div>
+          </form>
+          <div className="mt-8 grid gap-0 border border-line md:grid-cols-2 xl:grid-cols-4">
+            {partners.map((partner) => (
+              <p
+                key={partner}
+                className="border-b border-line px-6 py-5 text-xs font-semibold uppercase tracking-[0.08em] text-ink md:border-r md:last:border-r-0 md:[&:nth-last-child(-n+2)]:border-b-0 xl:border-b-0"
+              >
+                {partner}
+              </p>
+            ))}
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

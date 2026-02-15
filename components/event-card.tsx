@@ -9,10 +9,10 @@ type Props = {
   image: string;
 };
 
-export function EventCard({ title, date, type, description }: Props) {
+export function EventCard({ title, date, type, description, image }: Props) {
   return (
     <Card className="group overflow-hidden rounded-3xl bg-[#0d1629] transition duration-300 hover:-translate-y-1 hover:border-accent/60">
-      <MediaPlaceholder label={title} className="h-52 rounded-none border-x-0 border-t-0" />
+      <MediaPlaceholder label={title} src={image} className="h-52 rounded-none border-x-0 border-t-0" />
       <div className="space-y-4 p-6">
         <div className="flex items-center justify-between gap-3">
           <p className="inline-flex rounded-full border border-accent px-3 py-1 text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-accent">

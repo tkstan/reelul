@@ -1,9 +1,27 @@
+'use client';
+
+import { useState } from 'react';
+
 type MediaPlaceholderProps = {
   label: string;
+  src?: string;
   className?: string;
 };
 
-export function MediaPlaceholder({ label, className = '' }: MediaPlaceholderProps) {
+export function MediaPlaceholder({ label, src, className = '' }: MediaPlaceholderProps) {
+  const [hasError, setHasError] = useState(false);
+
+  if (src && !hasError) {
+    return (
+      <img
+        src={src}
+        alt={label}
+        className={`h-full w-full rounded-2xl border border-line object-cover ${className}`}
+        onError={() => setHasError(true)}
+      />
+    );
+  }
+
   return (
     <div
       aria-label={label}

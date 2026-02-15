@@ -3,24 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --paper: #f5f2eb;
-  --paper-soft: #ece6dc;
-  --ink: #070a12;
-  --ink-muted: #b7bfd1;
-  --line: #1a2133;
-  --accent: #a1162d;
-  --accent-soft: #c21b37;
+  --paper: #f5f5f2;
+  --paper-soft: #fbfbf9;
+  --ink: #111315;
+  --ink-muted: #5f656d;
+  --line: rgba(16, 18, 20, 0.12);
+  --accent: #7a0f14;
+  --accent-soft: #5f0d11;
 }
 
 html,
 body {
-  @apply min-h-full bg-ink text-paper antialiased;
+  @apply min-h-full bg-[#f5f5f2] text-[#111315] antialiased;
   scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-body), sans-serif;
-  background-image: radial-gradient(circle at 20% 0%, rgba(161, 22, 45, 0.14), transparent 36%);
+  background-image: radial-gradient(circle at 10% 0%, rgba(122, 15, 20, 0.06), transparent 38%);
 }
 
 main {
@@ -29,9 +29,8 @@ main {
 
 .font-display,
 .display-title {
-  font-family: var(--font-display), sans-serif;
-  font-stretch: condensed;
-  letter-spacing: 0.01em;
+  font-family: var(--font-body), sans-serif;
+  letter-spacing: 0.04em;
 }
 
 .display-title {
@@ -39,7 +38,7 @@ main {
 }
 
 .section-label {
-  @apply text-xs font-semibold uppercase tracking-[0.22em] text-accent;
+  @apply text-xs font-semibold uppercase tracking-[0.22em] text-[#7a0f14];
 }
 
 .underline-accent {
@@ -47,28 +46,10 @@ main {
   background-position: 0 100%;
   background-repeat: no-repeat;
   background-size: 0% 1px;
-  transition: background-size 220ms ease;
+  transition: background-size 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .group:hover .underline-accent,
 .group:focus-within .underline-accent {
   background-size: 100% 1px;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .animate-in-view {
-    opacity: 0.15;
-    transform: translateY(26px) scale(0.985);
-    animation: reveal linear both;
-    animation-timeline: view();
-    animation-range: entry 10% cover 35%;
-    will-change: transform, opacity;
-  }
-
-  @keyframes reveal {
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
 }

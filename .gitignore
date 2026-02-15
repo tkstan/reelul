@@ -1,2 +1,12 @@
 node_modules/
+.next/
+out/
 .env
+public/images/*
+!public/images/.gitkeep
+!public/images/README.md
+*.png
+*.jpg
+*.jpeg
+*.ico
+*.webp

@@ -1,17 +1,16 @@
 import { MediaPlaceholder } from '@/components/media-placeholder';
+import { Card } from '@/components/ui/card';
 
 type Props = { name: string; focus: string; image: string };
 
-export function ExecutiveCard({ name, focus }: Props) {
+export function ExecutiveCard({ name, focus, image }: Props) {
   return (
-    <article className="surface group overflow-hidden transition duration-300 hover:border-accent/40">
-      <div className="relative h-72 overflow-hidden">
-        <MediaPlaceholder label={name} className="transition duration-500 group-hover:scale-105 group-hover:opacity-85" />
+    <Card className="group overflow-hidden rounded-3xl bg-[#0d1629] transition duration-300 hover:-translate-y-1 hover:border-accent/55">
+      <MediaPlaceholder label={name} src={image} className="h-72 rounded-none border-x-0 border-t-0 transition duration-300 group-hover:opacity-80" />
+      <div className="space-y-2 p-6">
+        <h3 className="font-display text-3xl uppercase leading-[0.95] text-paper">{name}</h3>
+        <p className="text-xs uppercase tracking-[0.1em] text-paper/65">{focus}</p>
       </div>
-      <div className="p-6">
-        <h3 className="text-lg font-medium text-white">{name}</h3>
-        <p className="mt-1 text-sm text-mist">{focus}</p>
-      </div>
-    </article>
+    </Card>
   );
 }

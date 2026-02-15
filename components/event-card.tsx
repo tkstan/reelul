@@ -1,4 +1,5 @@
 import { MediaPlaceholder } from '@/components/media-placeholder';
+import { Card } from '@/components/ui/card';
 
 type Props = {
   title: string;
@@ -8,15 +9,22 @@ type Props = {
   image: string;
 };
 
-export function EventCard({ title, date, type, description }: Props) {
+export function EventCard({ title, date, type, description, image }: Props) {
   return (
-    <article className="surface group overflow-hidden transition duration-300 hover:-translate-y-1 hover:border-accent/40">
-      <MediaPlaceholder label={title} className="h-52 transition duration-500 group-hover:scale-105" />
-      <div className="space-y-3 p-6">
-        <p className="text-xs uppercase tracking-[0.16em] text-mist">{date} · {type}</p>
-        <h3 className="text-xl font-medium text-white">{title}</h3>
-        <p className="text-sm leading-relaxed text-mist">{description}</p>
+    <Card className="group overflow-hidden rounded-3xl bg-[#0d1629] transition duration-300 hover:-translate-y-1 hover:border-accent/60">
+      <MediaPlaceholder label={title} src={image} className="h-52 rounded-none border-x-0 border-t-0" />
+      <div className="space-y-4 p-6">
+        <div className="flex items-center justify-between gap-3">
+          <p className="inline-flex rounded-full border border-accent px-3 py-1 text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-accent">
+            {date}
+          </p>
+          <p className="text-[0.68rem] uppercase tracking-[0.16em] text-paper/60">{type}</p>
+        </div>
+        <h3 className="font-display text-3xl uppercase leading-[0.9] text-paper">
+          <span className="underline-accent">{title}</span>
+        </h3>
+        <p className="text-sm leading-relaxed text-paper/70">{description}</p>
       </div>
-    </article>
+    </Card>
   );
 }

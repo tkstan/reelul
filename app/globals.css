@@ -3,26 +3,57 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  --paper: #f6f2ea;
+  --paper-soft: #fbf8f2;
+  --ink: #161b27;
+  --ink-muted: #4d5566;
+  --line: #d8d0c5;
+  --accent: #7e1f2f;
+  --accent-soft: #9d3044;
 }
 
 html,
 body {
-  @apply bg-ink text-white antialiased;
+  @apply min-h-full bg-paper text-ink antialiased;
 }
 
 body {
-  background-image: radial-gradient(circle at top right, rgba(79, 124, 255, 0.14), transparent 45%);
+  font-family: var(--font-body), sans-serif;
+  background-image: radial-gradient(circle at 20% 0%, rgba(126, 31, 47, 0.05), transparent 36%);
 }
 
-.section-shell {
-  @apply mx-auto w-full max-w-6xl px-6 py-20 md:px-8;
+main {
+  @apply min-h-screen;
 }
 
-.kicker {
-  @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+.font-display,
+.display-title {
+  font-family: var(--font-display), sans-serif;
+  font-stretch: condensed;
+  letter-spacing: 0.01em;
 }
 
-.surface {
-  @apply rounded-3xl border border-line bg-white/[0.02] backdrop-blur;
+.display-title {
+  @apply uppercase font-semibold;
+}
+
+.section-label {
+  @apply text-xs font-semibold uppercase tracking-[0.22em] text-accent;
+}
+
+.editorial-divider {
+  @apply h-px w-full bg-line;
+}
+
+.underline-accent {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 220ms ease;
+}
+
+.group:hover .underline-accent,
+.group:focus-within .underline-accent {
+  background-size: 100% 1px;
 }

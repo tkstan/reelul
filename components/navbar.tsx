@@ -3,24 +3,28 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navItems } from '@/lib/content';
+import { Container } from '@/components/ui/container';
+import { Button } from '@/components/ui/button';
 
 export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line/80 bg-ink/80 backdrop-blur-xl">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-8" aria-label="Navigation principale">
-        <Link href="/" className="text-sm font-semibold tracking-[0.2em] text-white">
+    <header className="sticky top-0 z-50 border-b border-line bg-paper/95 backdrop-blur">
+      <Container className="flex items-center justify-between py-4">
+        <Link href="/" className="font-display text-2xl uppercase tracking-[0.12em] text-ink">
           RÉEL
         </Link>
-        <ul className="hidden gap-6 text-sm md:flex">
+        <ul className="hidden items-center gap-6 md:flex" aria-label="Navigation principale">
           {navItems.map((item) => {
             const active = pathname === item.href;
             return (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`transition-colors hover:text-white ${active ? 'text-white' : 'text-mist'}`}
+                  className={`text-xs font-semibold uppercase tracking-[0.14em] transition ${
+                    active ? 'text-accent' : 'text-ink-muted hover:text-ink'
+                  }`}
                 >
                   {item.label}
                 </Link>
@@ -28,13 +32,10 @@ export function Navbar() {
             );
           })}
         </ul>
-        <Link
-          href="/contact"
-          className="rounded-full border border-accent/40 bg-accent/15 px-4 py-2 text-xs font-semibold text-accent transition hover:bg-accent/25"
-        >
+        <Button href="/contact" className="hidden md:inline-flex">
           Rejoindre
-        </Link>
-      </nav>
+        </Button>
+      </Container>
     </header>
   );
 }

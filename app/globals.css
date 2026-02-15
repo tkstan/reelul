@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  @apply bg-ink text-white antialiased;
+}
+
+body {
+  background-image: radial-gradient(circle at top right, rgba(79, 124, 255, 0.14), transparent 45%);
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-6xl px-6 py-20 md:px-8;
+}
+
+.kicker {
+  @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+}
+
+.surface {
+  @apply rounded-3xl border border-line bg-white/[0.02] backdrop-blur;
+}

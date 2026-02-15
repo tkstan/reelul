@@ -8,7 +8,7 @@ export function MediaPlaceholder({ label, className = '' }: MediaPlaceholderProp
     <div
       aria-label={label}
       role="img"
-      className={`flex h-full w-full items-center justify-center bg-gradient-to-br from-[#151a28] via-[#101625] to-[#1b2645] text-center text-xs font-medium uppercase tracking-[0.18em] text-white/55 ${className}`}
+      className={`flex h-full w-full items-center justify-center border border-line bg-[linear-gradient(120deg,#f8f4ee_10%,#efe8dd_50%,#f8f4ee_90%)] px-4 text-center font-display text-sm uppercase tracking-[0.18em] text-ink-muted ${className}`}
     >
       {label}
     </div>

@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   themeColor: '#f5f5f2',
   icons: {
-    icon: '/icon.svg',
-    apple: '/apple-icon.svg'
+    icon: '/images/logo-reel-round.svg',
+    apple: '/images/logo-reel-round.svg'
   },
   openGraph: {
     title: 'RÉEL — Écosystème entrepreneurial étudiant',

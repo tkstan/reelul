@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
 
@@ -5,7 +6,10 @@ export function Footer() {
   return (
     <footer id="contact" className="border-t border-black/10 bg-[#f5f5f2]">
       <Container className="flex flex-col gap-4 py-10 text-[11px] uppercase tracking-[0.18em] text-black/50 md:flex-row md:items-center md:justify-between">
-        <p>© 2024 RÉEL — Regroupement des Étudiants Entrepreneurs.</p>
+        <div className="flex items-center gap-3">
+          <Image src="/images/logo-reel-round.svg" alt="Logo RÉEL" width={28} height={28} className="h-7 w-7 rounded-full object-contain" />
+          <p>© 2024 RÉEL — Regroupement des Étudiants Entrepreneurs.</p>
+        </div>
         <div className="flex gap-4">
           <Link href="https://www.instagram.com/reelul/" className="transition hover:text-[#7a0f14]">
             Instagram

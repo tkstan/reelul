@@ -128,14 +128,14 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/55" />
 
-        <Container className="relative z-10 flex min-h-screen items-end pb-14 pt-28 sm:pb-16 sm:pt-32 md:pb-24 md:pt-36">
+        <Container className="relative z-10 flex min-h-screen items-end pb-28 pt-24 sm:pb-24 sm:pt-32 md:pb-24 md:pt-36">
           <Reveal>
             <div className="max-w-4xl space-y-6 text-white md:space-y-7">
               <p className="text-xs uppercase tracking-[0.34em] text-white/85">RÉEL — ULaval</p>
-              <h1 className="max-w-5xl text-[2.6rem] font-semibold uppercase leading-[0.88] tracking-[0.04em] sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="max-w-5xl text-[2.1rem] font-semibold uppercase leading-[0.92] tracking-[0.02em] sm:text-5xl sm:leading-[0.9] sm:tracking-[0.04em] md:text-6xl lg:text-7xl">
                 L’entrepreneuriat étudiant en mouvement
               </h1>
-              <p className="max-w-2xl text-sm font-light tracking-[0.04em] text-white/88 md:text-base md:tracking-[0.08em]">
+              <p className="max-w-2xl text-base font-light leading-relaxed tracking-[0.02em] text-white/88 md:text-base md:tracking-[0.08em]">
                 Association étudiante née à la Faculté des sciences de l’administration et ouverte à toute la communauté
                 interfacultaire de l’Université Laval.
               </p>

@@ -43,7 +43,7 @@ export function Navbar() {
             width={44}
             height={44}
             priority
-            className={`h-11 w-11 rounded-full object-contain transition ${isTransparent ? 'drop-shadow-[0_8px_18px_rgba(0,0,0,0.45)]' : ''}`}
+            className={`h-11 w-11 object-contain transition ${isTransparent ? 'drop-shadow-[0_8px_18px_rgba(0,0,0,0.45)]' : ''}`}
           />
         </Link>
 

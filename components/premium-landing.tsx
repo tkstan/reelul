@@ -328,7 +328,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
           </Reveal>
 
           <div
-            className="relative left-1/2 h-[34rem] w-screen max-w-none -translate-x-1/2 overflow-visible rounded-[2rem] md:-mt-2"
+            className="relative mx-auto h-[34rem] w-full max-w-5xl overflow-visible rounded-[2rem] md:-mt-2"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >

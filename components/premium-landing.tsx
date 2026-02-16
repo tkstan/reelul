@@ -121,20 +121,6 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
     return () => clearInterval(timer);
   }, [executif.length]);
 
-  const cartesExecutif = useMemo(() => {
-    if (executif.length === 0) return [];
-    const offsets = [-1, 0, 1] as const;
-
-    return offsets.map((offset) => {
-      const index = (slide + offset + executif.length) % executif.length;
-      return {
-        offset,
-        membre: executif[index],
-        index,
-      };
-    });
-  }, [executif, slide]);
-
   const allerPrecedent = () => {
     if (executif.length === 0) return;
     setSlide((current) => (current - 1 + executif.length) % executif.length);
@@ -342,23 +328,25 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
           </Reveal>
 
           <div
-            className="relative mx-auto h-[34rem] w-full max-w-5xl overflow-hidden rounded-[2rem]"
+            className="relative mx-auto h-[34rem] w-full max-w-5xl overflow-visible rounded-[2rem]"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            {cartesExecutif.map(({ membre, offset }) => {
-              const stylesByOffset: Record<number, string> = {
-                [-1]: 'z-10 -translate-x-[62%] scale-[0.84] opacity-50 md:-translate-x-[50%] md:scale-[0.86]',
-                [0]: 'z-30 scale-100 opacity-100',
-                [1]: 'z-10 translate-x-[62%] scale-[0.84] opacity-50 md:translate-x-[50%] md:scale-[0.86]',
-              };
+            {executif.map((membre, index) => {
+              const offset = getOffsetCirculaire(index, slide, executif.length);
+              const isVisible = Math.abs(offset) <= 1;
 
               return (
                 <motion.article
-                  key={`${membre.id}-${offset}`}
-                  animate={{ opacity: offset === 0 ? 1 : 0.5 }}
+                  key={membre.id}
+                  animate={{
+                    x: `${offset * 58}%`,
+                    scale: offset === 0 ? 1 : 0.86,
+                    opacity: isVisible ? (offset === 0 ? 1 : 0.52) : 0,
+                  }}
                   transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className={`absolute left-1/2 top-0 h-full w-[84%] max-w-sm -translate-x-1/2 overflow-hidden rounded-[1.8rem] border border-black/10 bg-white shadow-[0_28px_70px_rgba(0,0,0,0.12)] transition-all duration-500 md:w-[70%] ${stylesByOffset[offset]}`}
+                  style={{ zIndex: offset === 0 ? 30 : 20 - Math.abs(offset), pointerEvents: offset === 0 ? 'auto' : 'none' }}
+                  className="absolute left-1/2 top-0 h-full w-[84%] max-w-sm -translate-x-1/2 overflow-hidden rounded-[1.8rem] border border-black/10 bg-white shadow-[0_28px_70px_rgba(0,0,0,0.12)] md:w-[70%]"
                   aria-hidden={offset !== 0}
                 >
                   <SafeImage src={membre.image} alt={membre.nom} width={900} height={1200} className="h-[56%] w-full object-cover object-[center_18%]" />
@@ -504,6 +492,14 @@ function getLundiFirstWeekday(date: Date) {
 
 function getDaysInMonth(year: number, month: number) {
   return new Date(year, month + 1, 0).getDate();
+}
+
+function getOffsetCirculaire(index: number, activeIndex: number, total: number) {
+  if (total <= 0) return 0;
+  const brut = index - activeIndex;
+  const modulo = ((brut % total) + total) % total;
+  if (modulo > total / 2) return modulo - total;
+  return modulo;
 }
 
 type SafeImageProps = {

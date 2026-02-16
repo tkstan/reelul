@@ -49,6 +49,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
   const [slide, setSlide] = useState(0);
+  const swipeStartX = useRef<number | null>(null);
 
   const evenementsDate = useMemo(
     () =>
@@ -119,6 +120,53 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
 
     return () => clearInterval(timer);
   }, [executif.length]);
+
+  const cartesExecutif = useMemo(() => {
+    if (executif.length === 0) return [];
+    const offsets = [-1, 0, 1] as const;
+
+    return offsets.map((offset) => {
+      const index = (slide + offset + executif.length) % executif.length;
+      return {
+        offset,
+        membre: executif[index],
+        index,
+      };
+    });
+  }, [executif, slide]);
+
+  const allerPrecedent = () => {
+    if (executif.length === 0) return;
+    setSlide((current) => (current - 1 + executif.length) % executif.length);
+  };
+
+  const allerSuivant = () => {
+    if (executif.length === 0) return;
+    setSlide((current) => (current + 1) % executif.length);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    swipeStartX.current = event.touches[0]?.clientX ?? null;
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (swipeStartX.current === null) return;
+    const endX = event.changedTouches[0]?.clientX;
+    if (typeof endX !== 'number') {
+      swipeStartX.current = null;
+      return;
+    }
+
+    const distance = endX - swipeStartX.current;
+    swipeStartX.current = null;
+
+    if (Math.abs(distance) < 45) return;
+    if (distance > 0) {
+      allerPrecedent();
+      return;
+    }
+    allerSuivant();
+  };
 
   return (
     <>
@@ -277,14 +325,14 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
               <div className="hidden items-center gap-3 md:flex">
                 <button
                   type="button"
-                  onClick={() => setSlide((slide - 1 + executif.length) % executif.length)}
+                  onClick={allerPrecedent}
                   className="rounded-full border border-black/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
                 >
                   Précédent
                 </button>
                 <button
                   type="button"
-                  onClick={() => setSlide((slide + 1) % executif.length)}
+                  onClick={allerSuivant}
                   className="rounded-full border border-black/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
                 >
                   Suivant
@@ -293,19 +341,52 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
             </header>
           </Reveal>
 
-          <div className="overflow-hidden rounded-[2rem] border border-black/10 bg-white">
-            <motion.div animate={{ x: `-${slide * 100}%` }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} className="flex">
-              {executif.map((membre) => (
-                <article key={membre.id} className="min-w-full md:grid md:grid-cols-[1.1fr_0.9fr]">
-                  <SafeImage src={membre.image} alt={membre.nom} width={1200} height={900} className="h-72 w-full object-cover object-[center_20%] md:h-[30rem] md:object-[center_16%]" />
-                  <div className="flex min-w-0 flex-col justify-center space-y-4 p-6 sm:p-8 md:space-y-5 md:p-12">
-                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7a0f14]">{membre.role}</p>
-                    <h3 className="break-words text-2xl font-semibold uppercase tracking-[0.05em] text-[#111315] sm:text-3xl md:text-5xl md:tracking-[0.08em]">{membre.nom}</h3>
-                    <p className="text-sm leading-relaxed tracking-[0.03em] text-black/70 md:text-base">{membre.axe}</p>
+          <div
+            className="relative mx-auto h-[34rem] w-full max-w-5xl overflow-hidden rounded-[2rem]"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {cartesExecutif.map(({ membre, offset }) => {
+              const stylesByOffset: Record<number, string> = {
+                [-1]: 'z-10 -translate-x-[62%] scale-[0.84] opacity-50 md:-translate-x-[50%] md:scale-[0.86]',
+                [0]: 'z-30 scale-100 opacity-100',
+                [1]: 'z-10 translate-x-[62%] scale-[0.84] opacity-50 md:translate-x-[50%] md:scale-[0.86]',
+              };
+
+              return (
+                <motion.article
+                  key={`${membre.id}-${offset}`}
+                  animate={{ opacity: offset === 0 ? 1 : 0.5 }}
+                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  className={`absolute left-1/2 top-0 h-full w-[84%] max-w-sm -translate-x-1/2 overflow-hidden rounded-[1.8rem] border border-black/10 bg-white shadow-[0_28px_70px_rgba(0,0,0,0.12)] transition-all duration-500 md:w-[70%] ${stylesByOffset[offset]}`}
+                  aria-hidden={offset !== 0}
+                >
+                  <SafeImage src={membre.image} alt={membre.nom} width={900} height={1200} className="h-[56%] w-full object-cover object-[center_18%]" />
+                  <div className="flex h-[44%] min-w-0 flex-col justify-center space-y-3 p-6 sm:p-7">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#7a0f14]">{membre.role}</p>
+                    <h3 className="break-words text-2xl font-semibold uppercase tracking-[0.06em] text-[#111315] sm:text-3xl">{membre.nom}</h3>
+                    <p className="text-sm leading-relaxed tracking-[0.03em] text-black/70">{membre.axe}</p>
                   </div>
-                </article>
-              ))}
-            </motion.div>
+                </motion.article>
+              );
+            })}
+          </div>
+
+          <div className="mt-6 flex items-center justify-center gap-3 md:hidden">
+            <button
+              type="button"
+              onClick={allerPrecedent}
+              className="rounded-full border border-black/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
+            >
+              Précédent
+            </button>
+            <button
+              type="button"
+              onClick={allerSuivant}
+              className="rounded-full border border-black/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
+            >
+              Suivant
+            </button>
           </div>
 
           <div className="mt-6 flex items-center justify-center gap-2">

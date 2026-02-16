@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -35,8 +36,15 @@ export function Navbar() {
       }`}
     >
       <Container className="flex items-center justify-between py-3">
-        <Link href="/#accueil" className={`${isTransparent ? 'text-white' : 'text-[#101214]'} text-xl font-semibold uppercase tracking-[0.2em] transition`}>
-          RÉEL
+        <Link href="/#accueil" className="inline-flex items-center" aria-label="Retour à l'accueil RÉEL">
+          <Image
+            src="/images/logo-reel-round.svg"
+            alt="Logo RÉEL"
+            width={44}
+            height={44}
+            priority
+            className={`h-11 w-11 rounded-full object-contain transition ${isTransparent ? 'drop-shadow-[0_8px_18px_rgba(0,0,0,0.45)]' : ''}`}
+          />
         </Link>
 
         <nav className="hidden md:block" aria-label="Navigation principale">

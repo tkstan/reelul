@@ -8,11 +8,10 @@ import { Button } from '@/components/ui/button';
 
 const onePageNav = [
   { href: '/#accueil', label: 'Accueil' },
-  { href: '/#about', label: 'À propos' },
-  { href: '/#evenements', label: 'Événements' },
+  { href: '/#calendrier', label: 'Calendrier' },
   { href: '/#executif', label: 'Exécutif' },
-  { href: '/#heritage', label: 'Héritage' },
-  { href: '/#contact', label: 'Nous joindre' }
+  { href: '/#heritage', label: 'Héritage Entrepreneuriat' },
+  { href: '/#contact', label: 'Contact' }
 ];
 
 export function Navbar() {
@@ -20,41 +19,44 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const isHome = pathname === '/';
+  const isTransparent = isHome && !scrolled;
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b transition-all duration-300 ${
-        !isHome || scrolled ? 'border-line bg-ink/90 backdrop-blur-xl' : 'border-transparent bg-transparent'
+      className={`fixed inset-x-0 top-0 z-50 border-b transition duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
+        isTransparent ? 'border-transparent bg-transparent' : 'border-black/10 bg-[rgba(245,245,242,0.92)] backdrop-blur-md'
       }`}
     >
-      <Container className="py-3">
-        <div className="flex items-center justify-between gap-4">
-          <Link href="/#accueil" className="font-display text-2xl uppercase tracking-[0.12em] text-paper">
-            RÉEL
-          </Link>
-          <Button href="/#contact" className="hidden md:inline-flex">
-            Rejoindre
-          </Button>
-        </div>
+      <Container className="flex items-center justify-between py-3">
+        <Link href="/#accueil" className={`${isTransparent ? 'text-white' : 'text-[#101214]'} text-xl font-semibold uppercase tracking-[0.2em] transition`}>
+          RÉEL
+        </Link>
 
-        <nav className="mt-3 overflow-x-auto pb-1" aria-label="Navigation principale">
-          <ul className="flex min-w-max items-center gap-5 pr-4">
+        <nav className="hidden md:block" aria-label="Navigation principale">
+          <ul className="flex items-center gap-7">
             {onePageNav.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="text-xs font-semibold uppercase tracking-[0.14em] text-paper/70 transition hover:text-paper">
+                <Link
+                  href={item.href}
+                  className={`${isTransparent ? 'text-white/85' : 'text-black/65'} text-[11px] font-medium uppercase tracking-[0.16em] transition hover:text-[#7a0f14]`}
+                >
                   {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
+
+        <Button href="/#contact" className="hidden md:inline-flex">
+          Écrire
+        </Button>
       </Container>
     </header>
   );

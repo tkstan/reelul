@@ -8,7 +8,7 @@ export function Footer() {
       <Container className="flex flex-col gap-4 py-10 text-[11px] uppercase tracking-[0.18em] text-black/50 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <Image src="/images/logo-reel-round.svg" alt="Logo RÉEL" width={28} height={28} className="h-7 w-7 rounded-full object-contain" />
-          <p>© 2024 RÉEL — Regroupement des Étudiants Entrepreneurs.</p>
+          <p>© 2026 RÉEL — Regroupement des Étudiants Entrepreneurs.</p>
         </div>
         <div className="flex gap-4">
           <Link href="https://www.instagram.com/reelul/" className="transition hover:text-[#7a0f14]">

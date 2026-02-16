@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 
@@ -49,6 +49,66 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
   const [slide, setSlide] = useState(0);
+
+  const evenementsDate = useMemo(
+    () =>
+      calendrier
+        .map((event) => ({ ...event, parsedDate: parserDateFrancaise(event.date) }))
+        .filter((event): event is BlocCalendrier & { parsedDate: Date } => event.parsedDate instanceof Date),
+    [calendrier]
+  );
+
+  const moisInitial = evenementsDate[0]?.parsedDate ?? new Date();
+  const [moisAffiche, setMoisAffiche] = useState({
+    year: moisInitial.getFullYear(),
+    month: moisInitial.getMonth(),
+  });
+
+  const [dateSelectionnee, setDateSelectionnee] = useState(() => toIsoDateString(moisInitial));
+
+  const evenementsParJour = useMemo(() => {
+    const map = new Map<string, (BlocCalendrier & { parsedDate: Date })[]>();
+    for (const event of evenementsDate) {
+      const iso = toIsoDateString(event.parsedDate);
+      const current = map.get(iso) ?? [];
+      current.push(event);
+      map.set(iso, current);
+    }
+    return map;
+  }, [evenementsDate]);
+
+  const nomMois = new Intl.DateTimeFormat('fr-CA', { month: 'long', year: 'numeric' });
+  const dateSelectionLabel = new Intl.DateTimeFormat('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  const dateDuMois = new Date(moisAffiche.year, moisAffiche.month, 1);
+  const premierJour = getLundiFirstWeekday(dateDuMois);
+  const nbJours = getDaysInMonth(moisAffiche.year, moisAffiche.month);
+
+  const cellulesCalendrier = [
+    ...Array.from({ length: premierJour }, (_, index) => ({ type: 'empty' as const, key: `empty-${index}` })),
+    ...Array.from({ length: nbJours }, (_, index) => {
+      const date = new Date(moisAffiche.year, moisAffiche.month, index + 1);
+      const iso = toIsoDateString(date);
+      const eventsCount = evenementsParJour.get(iso)?.length ?? 0;
+      return {
+        type: 'day' as const,
+        key: iso,
+        day: index + 1,
+        iso,
+        eventsCount,
+      };
+    }),
+  ];
+
+  const evenementsSelectionnes = evenementsParJour.get(dateSelectionnee) ?? [];
+
+  useEffect(() => {
+    if (evenementsParJour.has(dateSelectionnee)) return;
+    const firstEventDate = evenementsDate[0]?.parsedDate;
+    if (!firstEventDate) return;
+    setDateSelectionnee(toIsoDateString(firstEventDate));
+    setMoisAffiche({ year: firstEventDate.getFullYear(), month: firstEventDate.getMonth() });
+  }, [dateSelectionnee, evenementsDate, evenementsParJour]);
 
   useEffect(() => {
     if (executif.length <= 1) return;
@@ -106,21 +166,100 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
             </header>
           </Reveal>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {calendrier.map((event, index) => (
-              <Reveal key={event.id} delay={index * 0.08}>
-                <article className="overflow-hidden rounded-[1.8rem] border border-black/10 bg-white">
-                  <SafeImage src={event.image} alt={event.titre} width={800} height={540} className="h-56 w-full object-cover" />
-                  <div className="space-y-3 p-6">
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-[#7a0f14]">
-                      {event.date} · {event.lieu}
+          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <Reveal>
+              <div className="rounded-[1.8rem] border border-black/10 bg-white p-6 md:p-8">
+                <div className="mb-6 flex items-center justify-between gap-4">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setMoisAffiche((current) => {
+                        const previous = new Date(current.year, current.month - 1, 1);
+                        return { year: previous.getFullYear(), month: previous.getMonth() };
+                      })
+                    }
+                    className="rounded-full border border-black/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
+                  >
+                    Précédent
+                  </button>
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#111315]">{nomMois.format(dateDuMois)}</p>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setMoisAffiche((current) => {
+                        const next = new Date(current.year, current.month + 1, 1);
+                        return { year: next.getFullYear(), month: next.getMonth() };
+                      })
+                    }
+                    className="rounded-full border border-black/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
+                  >
+                    Suivant
+                  </button>
+                </div>
+
+                <div className="mb-3 grid grid-cols-7 gap-2 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-black/50 md:text-xs">
+                  {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map((jour) => (
+                    <span key={jour}>{jour}</span>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-7 gap-2">
+                  {cellulesCalendrier.map((cellule) => {
+                    if (cellule.type === 'empty') {
+                      return <span key={cellule.key} className="aspect-square rounded-xl bg-black/[0.03]" aria-hidden="true" />;
+                    }
+
+                    const estSelectionnee = cellule.iso === dateSelectionnee;
+                    const hasEvents = cellule.eventsCount > 0;
+
+                    return (
+                      <button
+                        key={cellule.key}
+                        type="button"
+                        onClick={() => setDateSelectionnee(cellule.iso)}
+                        className={`group relative aspect-square rounded-xl border text-sm font-semibold transition md:text-base ${
+                          estSelectionnee
+                            ? 'border-[#7a0f14] bg-[#7a0f14] text-white'
+                            : hasEvents
+                              ? 'border-[#7a0f14]/30 bg-[#7a0f14]/5 text-[#7a0f14] hover:bg-[#7a0f14]/10'
+                              : 'border-black/10 bg-white text-black/75 hover:border-black/25'
+                        }`}
+                        aria-label={`${cellule.day} ${nomMois.format(dateDuMois)}${hasEvents ? `, ${cellule.eventsCount} événement${cellule.eventsCount > 1 ? 's' : ''}` : ''}`}
+                      >
+                        {cellule.day}
+                        {hasEvents && (
+                          <span className={`absolute bottom-2 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full ${estSelectionnee ? 'bg-white/90' : 'bg-[#7a0f14]'}`} />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <aside className="rounded-[1.8rem] border border-black/10 bg-white p-6 md:p-8">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#7a0f14]">{dateSelectionLabel.format(new Date(dateSelectionnee))}</p>
+                <div className="mt-5 space-y-5">
+                  {evenementsSelectionnes.length > 0 ? (
+                    evenementsSelectionnes.map((event) => (
+                      <article key={event.id} className="overflow-hidden rounded-2xl border border-black/10 bg-[#f8f8f5]">
+                        <SafeImage src={event.image} alt={event.titre} width={800} height={540} className="h-40 w-full object-cover" />
+                        <div className="space-y-2 p-4">
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-[#7a0f14]">{event.lieu}</p>
+                          <h3 className="text-lg font-semibold uppercase tracking-[0.05em] text-[#121416]">{event.titre}</h3>
+                          {event.description ? <p className="text-sm leading-relaxed tracking-[0.02em] text-black/70">{event.description}</p> : null}
+                        </div>
+                      </article>
+                    ))
+                  ) : (
+                    <p className="rounded-2xl border border-dashed border-black/20 bg-black/[0.02] p-5 text-sm tracking-[0.03em] text-black/65">
+                      Aucun événement prévu pour cette date.
                     </p>
-                    <h3 className="text-xl font-semibold uppercase tracking-[0.06em] text-[#121416]">{event.titre}</h3>
-                    <p className="text-sm leading-relaxed tracking-[0.02em] text-black/70">{event.description}</p>
-                  </div>
-                </article>
-              </Reveal>
-            ))}
+                  )}
+                </div>
+              </aside>
+            </Reveal>
           </div>
         </Container>
       </section>
@@ -234,6 +373,47 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
       </section>
     </>
   );
+}
+
+const MOIS_FR: Record<string, number> = {
+  janvier: 0,
+  fevrier: 1,
+  février: 1,
+  mars: 2,
+  avril: 3,
+  mai: 4,
+  juin: 5,
+  juillet: 6,
+  aout: 7,
+  août: 7,
+  septembre: 8,
+  octobre: 9,
+  novembre: 10,
+  decembre: 11,
+  décembre: 11,
+};
+
+function parserDateFrancaise(value: string): Date | null {
+  const match = value.trim().match(/^(\d{1,2})\s+([\p{L}]+)\s+(\d{4})$/u);
+  if (!match) return null;
+
+  const [, dayRaw, monthRaw, yearRaw] = match;
+  const monthIndex = MOIS_FR[monthRaw.toLowerCase()];
+  if (monthIndex === undefined) return null;
+
+  return new Date(Number(yearRaw), monthIndex, Number(dayRaw));
+}
+
+function toIsoDateString(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+function getLundiFirstWeekday(date: Date) {
+  return (date.getDay() + 6) % 7;
+}
+
+function getDaysInMonth(year: number, month: number) {
+  return new Date(year, month + 1, 0).getDate();
 }
 
 type SafeImageProps = {

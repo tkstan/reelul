@@ -328,7 +328,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
           </Reveal>
 
           <div
-            className="relative mx-auto h-[34rem] w-full max-w-5xl overflow-visible rounded-[2rem]"
+            className="relative mx-auto h-[34rem] w-full max-w-5xl overflow-visible rounded-[2rem] md:-mt-2"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
@@ -340,7 +340,8 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
                 <motion.article
                   key={membre.id}
                   animate={{
-                    x: `${offset * 58}%`,
+                    x: `${offset * 50}%`,
+                    y: offset === 0 ? 0 : 18,
                     scale: offset === 0 ? 1 : 0.86,
                     opacity: isVisible ? (offset === 0 ? 1 : 0.52) : 0,
                   }}

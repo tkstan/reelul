@@ -132,7 +132,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
           <Reveal>
             <div className="max-w-4xl space-y-6 text-white md:space-y-7">
               <p className="text-xs uppercase tracking-[0.34em] text-white/85">RÉEL — ULaval</p>
-              <h1 className="max-w-5xl text-[2.6rem] font-semibold uppercase leading-[0.86] tracking-[0.04em] sm:text-5xl md:text-7xl lg:text-8xl">
+              <h1 className="max-w-5xl text-[2.6rem] font-semibold uppercase leading-[0.88] tracking-[0.04em] sm:text-5xl md:text-6xl lg:text-7xl">
                 L’entrepreneuriat étudiant en mouvement
               </h1>
               <p className="max-w-2xl text-sm font-light tracking-[0.04em] text-white/88 md:text-base md:tracking-[0.08em]">
@@ -272,7 +272,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
             <header className="mb-10 flex items-end justify-between gap-6 md:mb-14">
               <div className="max-w-3xl space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7a0f14]">Exécutif</p>
-                <h2 className="text-4xl font-semibold uppercase tracking-[0.06em] text-[#111315] md:text-6xl md:tracking-[0.08em]">L’équipe qui propulse le RÉEL</h2>
+                <h2 className="text-3xl font-semibold uppercase tracking-[0.08em] text-[#111315] sm:text-4xl md:text-5xl">L’EXÉCUTIF</h2>
               </div>
               <div className="hidden items-center gap-3 md:flex">
                 <button
@@ -323,17 +323,24 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
       </section>
 
       <section id="heritage" className="relative overflow-hidden">
-        <SafeImage src="/images/heritage-hero.jpg" alt="Communauté RÉEL lors d'une conférence" width={2000} height={1200} className="h-[72vh] w-full object-cover object-[center_30%] md:object-[center_24%]" />
+        <SafeImage
+          src="/images/heritage-hero.jpg"
+          alt="Communauté RÉEL lors d'une conférence"
+          fill
+          className="object-cover object-[center_34%] md:object-[center_24%]"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/65" />
-        <Container className="absolute inset-0 z-10 flex h-full items-center justify-center text-center">
+        <Container className="relative z-10 flex min-h-[68vh] items-center justify-center py-16 text-center sm:min-h-[72vh] md:min-h-[78vh] md:py-20">
           <Reveal>
-            <div className="space-y-6 text-white">
-              <p className="text-xs font-semibold uppercase tracking-[0.34em] text-white/80">Héritage Entrepreneuriat</p>
-              <h2 className="text-4xl font-semibold uppercase tracking-[0.1em] md:text-6xl">Apprendre avec structure</h2>
-              <p className="mx-auto max-w-2xl text-sm tracking-[0.06em] text-white/85 md:text-base">
+            <div className="space-y-5 text-white md:space-y-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-white/80">Héritage Entrepreneuriat</p>
+              <h2 className="text-3xl font-semibold uppercase tracking-[0.08em] sm:text-4xl md:text-5xl">Apprendre avec structure</h2>
+              <p className="mx-auto max-w-2xl text-sm tracking-[0.04em] text-white/85 md:text-base md:tracking-[0.06em]">
                 Une plateforme pour démocratiser les outils entrepreneuriaux et rendre l’action plus accessible aux étudiant·e·s.
               </p>
-              <Button href="https://heritage-entrepreneuriat.vercel.app/">Découvrir la plateforme</Button>
+              <Button href="https://heritage-entrepreneuriat.vercel.app/" className="w-full sm:w-auto">
+                Découvrir la plateforme
+              </Button>
             </div>
           </Reveal>
         </Container>

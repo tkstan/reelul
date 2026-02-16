@@ -49,6 +49,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
   const [slide, setSlide] = useState(0);
+  const swipeStartX = useRef<number | null>(null);
 
   const evenementsDate = useMemo(
     () =>
@@ -119,6 +120,39 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
 
     return () => clearInterval(timer);
   }, [executif.length]);
+
+  const allerPrecedent = () => {
+    if (executif.length === 0) return;
+    setSlide((current) => (current - 1 + executif.length) % executif.length);
+  };
+
+  const allerSuivant = () => {
+    if (executif.length === 0) return;
+    setSlide((current) => (current + 1) % executif.length);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    swipeStartX.current = event.touches[0]?.clientX ?? null;
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (swipeStartX.current === null) return;
+    const endX = event.changedTouches[0]?.clientX;
+    if (typeof endX !== 'number') {
+      swipeStartX.current = null;
+      return;
+    }
+
+    const distance = endX - swipeStartX.current;
+    swipeStartX.current = null;
+
+    if (Math.abs(distance) < 45) return;
+    if (distance > 0) {
+      allerPrecedent();
+      return;
+    }
+    allerSuivant();
+  };
 
   return (
     <>
@@ -277,14 +311,14 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
               <div className="hidden items-center gap-3 md:flex">
                 <button
                   type="button"
-                  onClick={() => setSlide((slide - 1 + executif.length) % executif.length)}
+                  onClick={allerPrecedent}
                   className="rounded-full border border-black/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
                 >
                   Précédent
                 </button>
                 <button
                   type="button"
-                  onClick={() => setSlide((slide + 1) % executif.length)}
+                  onClick={allerSuivant}
                   className="rounded-full border border-black/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
                 >
                   Suivant
@@ -293,19 +327,55 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
             </header>
           </Reveal>
 
-          <div className="overflow-hidden rounded-[2rem] border border-black/10 bg-white">
-            <motion.div animate={{ x: `-${slide * 100}%` }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} className="flex">
-              {executif.map((membre) => (
-                <article key={membre.id} className="min-w-full md:grid md:grid-cols-[1.1fr_0.9fr]">
-                  <SafeImage src={membre.image} alt={membre.nom} width={1200} height={900} className="h-72 w-full object-cover object-[center_20%] md:h-[30rem] md:object-[center_16%]" />
-                  <div className="flex min-w-0 flex-col justify-center space-y-4 p-6 sm:p-8 md:space-y-5 md:p-12">
-                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7a0f14]">{membre.role}</p>
-                    <h3 className="break-words text-2xl font-semibold uppercase tracking-[0.05em] text-[#111315] sm:text-3xl md:text-5xl md:tracking-[0.08em]">{membre.nom}</h3>
-                    <p className="text-sm leading-relaxed tracking-[0.03em] text-black/70 md:text-base">{membre.axe}</p>
+          <div
+            className="relative left-1/2 h-[34rem] w-screen max-w-none -translate-x-1/2 overflow-visible rounded-[2rem] md:-mt-2"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {executif.map((membre, index) => {
+              const offset = getOffsetCirculaire(index, slide, executif.length);
+              const isVisible = Math.abs(offset) <= 1;
+
+              return (
+                <motion.article
+                  key={membre.id}
+                  animate={{
+                    x: `${offset * 50}%`,
+                    y: offset === 0 ? 0 : 18,
+                    scale: offset === 0 ? 1 : 0.86,
+                    opacity: isVisible ? (offset === 0 ? 1 : 0.52) : 0,
+                  }}
+                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ zIndex: offset === 0 ? 30 : 20 - Math.abs(offset), pointerEvents: offset === 0 ? 'auto' : 'none' }}
+                  className="absolute left-1/2 top-0 h-full w-[84%] max-w-sm -translate-x-1/2 overflow-hidden rounded-[1.8rem] border border-black/10 bg-white shadow-[0_28px_70px_rgba(0,0,0,0.12)] md:w-[70%]"
+                  aria-hidden={offset !== 0}
+                >
+                  <SafeImage src={membre.image} alt={membre.nom} width={900} height={1200} className="h-[56%] w-full object-cover object-[center_18%]" />
+                  <div className="flex h-[44%] min-w-0 flex-col justify-center space-y-3 p-6 sm:p-7">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#7a0f14]">{membre.role}</p>
+                    <h3 className="break-words text-2xl font-semibold uppercase tracking-[0.06em] text-[#111315] sm:text-3xl">{membre.nom}</h3>
+                    <p className="text-sm leading-relaxed tracking-[0.03em] text-black/70">{membre.axe}</p>
                   </div>
-                </article>
-              ))}
-            </motion.div>
+                </motion.article>
+              );
+            })}
+          </div>
+
+          <div className="mt-6 flex items-center justify-center gap-3 md:hidden">
+            <button
+              type="button"
+              onClick={allerPrecedent}
+              className="rounded-full border border-black/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
+            >
+              Précédent
+            </button>
+            <button
+              type="button"
+              onClick={allerSuivant}
+              className="rounded-full border border-black/15 px-4 py-2 text-xs uppercase tracking-[0.16em] text-black/70 transition hover:border-[#7a0f14] hover:text-[#7a0f14]"
+            >
+              Suivant
+            </button>
           </div>
 
           <div className="mt-6 flex items-center justify-center gap-2">
@@ -423,6 +493,14 @@ function getLundiFirstWeekday(date: Date) {
 
 function getDaysInMonth(year: number, month: number) {
   return new Date(year, month + 1, 0).getDate();
+}
+
+function getOffsetCirculaire(index: number, activeIndex: number, total: number) {
+  if (total <= 0) return 0;
+  const brut = index - activeIndex;
+  const modulo = ((brut % total) + total) % total;
+  if (modulo > total / 2) return modulo - total;
+  return modulo;
 }
 
 type SafeImageProps = {

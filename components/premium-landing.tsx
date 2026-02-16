@@ -128,24 +128,26 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/55" />
 
-        <Container className="relative z-10 flex min-h-screen items-end pb-20 pt-36 md:pb-24">
+        <Container className="relative z-10 flex min-h-screen items-end pb-14 pt-28 sm:pb-16 sm:pt-32 md:pb-24 md:pt-36">
           <Reveal>
-            <div className="max-w-4xl space-y-7 text-white">
+            <div className="max-w-4xl space-y-6 text-white md:space-y-7">
               <p className="text-xs uppercase tracking-[0.34em] text-white/85">RÉEL — ULaval</p>
-              <h1 className="text-5xl font-semibold uppercase leading-[0.84] tracking-[0.06em] md:text-7xl lg:text-8xl">
-                L’entrepreneuriat
-                <br />
-                étudiant
-                <br />
-                en mouvement
+              <h1 className="max-w-5xl text-[2.6rem] font-semibold uppercase leading-[0.88] tracking-[0.04em] sm:text-5xl md:text-6xl lg:text-7xl">
+                L’entrepreneuriat étudiant en mouvement
               </h1>
-              <p className="max-w-2xl text-sm font-light tracking-[0.08em] text-white/88 md:text-base">
+              <p className="max-w-2xl text-sm font-light tracking-[0.04em] text-white/88 md:text-base md:tracking-[0.08em]">
                 Association étudiante née à la Faculté des sciences de l’administration et ouverte à toute la communauté
                 interfacultaire de l’Université Laval.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Button href="#calendrier">Voir le calendrier</Button>
-                <Button href="#executif" kind="ghost" className="border-white/40 text-white hover:border-white/80 hover:text-white">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+                <Button href="#calendrier" className="w-full sm:w-auto">
+                  Voir le calendrier
+                </Button>
+                <Button
+                  href="#executif"
+                  kind="ghost"
+                  className="w-full border-white/40 text-white hover:border-white/80 hover:text-white sm:w-auto"
+                >
                   Rencontrer l’exécutif
                 </Button>
               </div>
@@ -270,7 +272,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
             <header className="mb-10 flex items-end justify-between gap-6 md:mb-14">
               <div className="max-w-3xl space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7a0f14]">Exécutif</p>
-                <h2 className="text-4xl font-semibold uppercase tracking-[0.08em] text-[#111315] md:text-6xl">L’équipe qui propulse RÉEL</h2>
+                <h2 className="text-3xl font-semibold uppercase tracking-[0.08em] text-[#111315] sm:text-4xl md:text-5xl">L’EXÉCUTIF</h2>
               </div>
               <div className="hidden items-center gap-3 md:flex">
                 <button
@@ -296,9 +298,9 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
               {executif.map((membre) => (
                 <article key={membre.id} className="min-w-full md:grid md:grid-cols-[1.1fr_0.9fr]">
                   <SafeImage src={membre.image} alt={membre.nom} width={1200} height={900} className="h-72 w-full object-cover object-[center_20%] md:h-[30rem] md:object-[center_16%]" />
-                  <div className="flex flex-col justify-center space-y-5 p-8 md:p-12">
+                  <div className="flex min-w-0 flex-col justify-center space-y-4 p-6 sm:p-8 md:space-y-5 md:p-12">
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7a0f14]">{membre.role}</p>
-                    <h3 className="text-3xl font-semibold uppercase tracking-[0.08em] text-[#111315] md:text-5xl">{membre.nom}</h3>
+                    <h3 className="break-words text-2xl font-semibold uppercase tracking-[0.05em] text-[#111315] sm:text-3xl md:text-5xl md:tracking-[0.08em]">{membre.nom}</h3>
                     <p className="text-sm leading-relaxed tracking-[0.03em] text-black/70 md:text-base">{membre.axe}</p>
                   </div>
                 </article>
@@ -321,17 +323,24 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
       </section>
 
       <section id="heritage" className="relative overflow-hidden">
-        <SafeImage src="/images/heritage-hero.jpg" alt="Communauté RÉEL lors d'une conférence" width={2000} height={1200} className="h-[72vh] w-full object-cover object-[center_30%] md:object-[center_24%]" />
+        <SafeImage
+          src="/images/heritage-hero.jpg"
+          alt="Communauté RÉEL lors d'une conférence"
+          fill
+          className="object-cover object-[center_34%] md:object-[center_24%]"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/65" />
-        <Container className="absolute inset-0 z-10 flex h-full items-center justify-center text-center">
+        <Container className="relative z-10 flex min-h-[68vh] items-center justify-center py-16 text-center sm:min-h-[72vh] md:min-h-[78vh] md:py-20">
           <Reveal>
-            <div className="space-y-6 text-white">
-              <p className="text-xs font-semibold uppercase tracking-[0.34em] text-white/80">Héritage Entrepreneuriat</p>
-              <h2 className="text-4xl font-semibold uppercase tracking-[0.1em] md:text-6xl">Apprendre avec structure</h2>
-              <p className="mx-auto max-w-2xl text-sm tracking-[0.06em] text-white/85 md:text-base">
+            <div className="space-y-5 text-white md:space-y-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-white/80">Héritage Entrepreneuriat</p>
+              <h2 className="text-3xl font-semibold uppercase tracking-[0.08em] sm:text-4xl md:text-5xl">Apprendre avec structure</h2>
+              <p className="mx-auto max-w-2xl text-sm tracking-[0.04em] text-white/85 md:text-base md:tracking-[0.06em]">
                 Une plateforme pour démocratiser les outils entrepreneuriaux et rendre l’action plus accessible aux étudiant·e·s.
               </p>
-              <Button href="https://heritage-entrepreneuriat.vercel.app/">Découvrir la plateforme</Button>
+              <Button href="https://heritage-entrepreneuriat.vercel.app/" className="w-full sm:w-auto">
+                Découvrir la plateforme
+              </Button>
             </div>
           </Reveal>
         </Container>

@@ -64,7 +64,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
     <>
       <section id="accueil" ref={heroRef} className="relative min-h-screen overflow-hidden border-b border-black/10 bg-[#f5f5f2]">
         <motion.div style={{ y: heroY }} className="absolute inset-0 scale-105">
-          <SafeImage src="/images/hero-accueil.jpg" alt="Événement étudiant du RÉEL" fill priority className="object-cover" />
+          <SafeImage src="/images/hero-accueil.jpg" alt="Événement étudiant du RÉEL" fill priority className="object-cover object-[center_24%] md:object-[center_20%]" />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/55" />
 
@@ -156,7 +156,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
             <motion.div animate={{ x: `-${slide * 100}%` }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} className="flex">
               {executif.map((membre) => (
                 <article key={membre.id} className="min-w-full md:grid md:grid-cols-[1.1fr_0.9fr]">
-                  <SafeImage src={membre.image} alt={membre.nom} width={1200} height={900} className="h-72 w-full object-cover md:h-[30rem]" />
+                  <SafeImage src={membre.image} alt={membre.nom} width={1200} height={900} className="h-72 w-full object-cover object-[center_20%] md:h-[30rem] md:object-[center_16%]" />
                   <div className="flex flex-col justify-center space-y-5 p-8 md:p-12">
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7a0f14]">{membre.role}</p>
                     <h3 className="text-3xl font-semibold uppercase tracking-[0.08em] text-[#111315] md:text-5xl">{membre.nom}</h3>
@@ -182,7 +182,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
       </section>
 
       <section id="heritage" className="relative overflow-hidden">
-        <SafeImage src="/images/heritage-hero.jpg" alt="Communauté RÉEL lors d'une conférence" width={2000} height={1200} className="h-[72vh] w-full object-cover" />
+        <SafeImage src="/images/heritage-hero.jpg" alt="Communauté RÉEL lors d'une conférence" width={2000} height={1200} className="h-[72vh] w-full object-cover object-[center_30%] md:object-[center_24%]" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/65" />
         <Container className="absolute inset-0 z-10 flex h-full items-center justify-center text-center">
           <Reveal>

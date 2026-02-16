@@ -347,7 +347,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
                   }}
                   transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                   style={{ zIndex: offset === 0 ? 30 : 20 - Math.abs(offset), pointerEvents: offset === 0 ? 'auto' : 'none' }}
-                  className="absolute left-1/2 top-0 h-full w-[84%] max-w-sm -translate-x-1/2 overflow-hidden rounded-[1.8rem] border border-black/10 bg-white shadow-[0_28px_70px_rgba(0,0,0,0.12)] md:w-[70%]"
+                  className="absolute left-0 right-0 top-0 mx-auto h-full w-[84%] max-w-sm overflow-hidden rounded-[1.8rem] border border-black/10 bg-white shadow-[0_28px_70px_rgba(0,0,0,0.12)] md:w-[70%]"
                   aria-hidden={offset !== 0}
                 >
                   <SafeImage src={membre.image} alt={membre.nom} width={900} height={1200} className="h-[56%] w-full object-cover object-[center_18%]" />

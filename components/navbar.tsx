@@ -8,8 +8,9 @@ import { Button } from '@/components/ui/button';
 
 const onePageNav = [
   { href: '/#accueil', label: 'Accueil' },
-  { href: '/#experience', label: 'Expérience' },
-  { href: '/#features', label: 'Features' },
+  { href: '/#calendrier', label: 'Calendrier' },
+  { href: '/#executif', label: 'Exécutif' },
+  { href: '/#heritage', label: 'Héritage Entrepreneuriat' },
   { href: '/#contact', label: 'Contact' }
 ];
 
@@ -18,7 +19,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
+    const onScroll = () => setScrolled(window.scrollY > 18);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -30,12 +31,12 @@ export function Navbar() {
     <header
       className={`sticky top-0 z-50 border-b transition duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
         !isHome || scrolled
-          ? 'border-black/10 bg-[rgba(248,248,246,0.78)] backdrop-blur-md'
-          : 'border-transparent bg-[rgba(248,248,246,0.42)] backdrop-blur-md'
+          ? 'border-black/10 bg-[rgba(245,245,242,0.92)] backdrop-blur-md'
+          : 'border-transparent bg-transparent'
       }`}
     >
       <Container className="flex items-center justify-between py-3">
-        <Link href="/#accueil" className="text-xl font-semibold uppercase tracking-[0.2em] text-[#101214]">
+        <Link href="/#accueil" className={`${!isHome || scrolled ? 'text-[#101214]' : 'text-white'} text-xl font-semibold uppercase tracking-[0.2em] transition`}>
           RÉEL
         </Link>
 
@@ -43,7 +44,10 @@ export function Navbar() {
           <ul className="flex items-center gap-7">
             {onePageNav.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/60 transition hover:text-[#7a0f14]">
+                <Link
+                  href={item.href}
+                  className={`${!isHome || scrolled ? 'text-black/65' : 'text-white/85'} text-[11px] font-medium uppercase tracking-[0.16em] transition hover:text-[#7a0f14]`}
+                >
                   {item.label}
                 </Link>
               </li>
@@ -52,7 +56,7 @@ export function Navbar() {
         </nav>
 
         <Button href="/#contact" className="hidden md:inline-flex">
-          Rejoindre
+          Écrire
         </Button>
       </Container>
     </header>

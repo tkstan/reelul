@@ -17,7 +17,7 @@ export default function HeritagePage() {
             Explorez un contenu structuré autour d’expériences terrain, de perspectives locales et de ressources
             concrètes pour passer de l’idée à l’exécution avec plus de clarté.
           </p>
-          <Button href="https://www.heritageentrepreneuriat.ca/">Découvrir la plateforme</Button>
+          <Button href="https://heritage-entrepreneuriat.vercel.app/">Découvrir la plateforme</Button>
         </div>
         <MediaPlaceholder label="Plateforme Héritage Entrepreneuriat" className="h-80" />
       </Card>

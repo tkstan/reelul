@@ -192,7 +192,7 @@ export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
               <p className="mx-auto max-w-2xl text-sm tracking-[0.06em] text-white/85 md:text-base">
                 Une plateforme pour démocratiser les outils entrepreneuriaux et rendre l’action plus accessible aux étudiant·e·s.
               </p>
-              <Button href="https://www.heritageentrepreneuriat.ca/">Découvrir la plateforme</Button>
+              <Button href="https://heritage-entrepreneuriat.vercel.app/">Découvrir la plateforme</Button>
             </div>
           </Reveal>
         </Container>

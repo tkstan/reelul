@@ -7,71 +7,28 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 
 type BlocCalendrier = {
+  id: string;
   titre: string;
   date: string;
   lieu: string;
   description: string;
   image: string;
+  ordre: number;
 };
 
 type MembreExecutif = {
+  id: string;
   nom: string;
   role: string;
   axe: string;
   image: string;
+  ordre: number;
 };
 
-const calendrier: BlocCalendrier[] = [
-  {
-    titre: 'Soirée Réseautage Interfacultaire',
-    date: '12 mars 2026',
-    lieu: 'Pavillon Palasis-Prince',
-    description:
-      'Une soirée pour connecter des étudiant·e·s de la FSA, génie, droit et sciences afin de créer des collaborations concrètes.',
-    image: '/images/DSC08797-Edit-scaled.jpg'
-  },
-  {
-    titre: 'Conférence Produit & Croissance',
-    date: '4 avril 2026',
-    lieu: 'Université Laval',
-    description: 'Retours terrain de leaders québécois sur l’exécution, le marketing et les décisions qui font vraiment avancer un projet.',
-    image: '/images/DSC08898-Edit-scaled.jpg'
-  },
-  {
-    titre: 'Sprint Validation d’Idée',
-    date: '24 avril 2026',
-    lieu: 'Espace entrepreneurial ULaval',
-    description: 'Atelier intensif pour transformer une idée en plan d’action testable avec mentors et ressources pratiques.',
-    image: '/images/Sans-titre-7.png'
-  }
-];
-
-const executif: MembreExecutif[] = [
-  {
-    nom: 'Camille Gagnon',
-    role: 'Présidente',
-    axe: 'Vision stratégique et partenariats interfacultaires.',
-    image: '/images/DSC08963-scaled.jpg'
-  },
-  {
-    nom: 'Thomas Bernier',
-    role: 'Vice-président événements',
-    axe: 'Expériences premium et programmation annuelle.',
-    image: '/images/MMP03629-scaled.jpg'
-  },
-  {
-    nom: 'Myriam Ouellet',
-    role: 'Vice-présidente Héritage',
-    axe: 'Développement de la plateforme Héritage Entrepreneuriat.',
-    image: '/images/DSC08797-Edit-scaled.jpg'
-  },
-  {
-    nom: 'Samuel Roy',
-    role: 'Directeur communauté',
-    axe: 'Activation du réseau étudiant ULaval et alumni.',
-    image: '/images/DSC08898-Edit-scaled.jpg'
-  }
-];
+type PremiumLandingProps = {
+  calendrier: BlocCalendrier[];
+  executif: MembreExecutif[];
+};
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -86,7 +43,7 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
-export function PremiumLanding() {
+export function PremiumLanding({ calendrier, executif }: PremiumLandingProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
@@ -94,12 +51,14 @@ export function PremiumLanding() {
   const [slide, setSlide] = useState(0);
 
   useEffect(() => {
+    if (executif.length <= 1) return;
+
     const timer = setInterval(() => {
       setSlide((current) => (current + 1) % executif.length);
     }, 4500);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [executif.length]);
 
   return (
     <>
@@ -149,7 +108,7 @@ export function PremiumLanding() {
 
           <div className="grid gap-6 md:grid-cols-3">
             {calendrier.map((event, index) => (
-              <Reveal key={event.titre} delay={index * 0.08}>
+              <Reveal key={event.id} delay={index * 0.08}>
                 <article className="overflow-hidden rounded-[1.8rem] border border-black/10 bg-white">
                   <Image src={event.image} alt={event.titre} width={800} height={540} className="h-56 w-full object-cover" />
                   <div className="space-y-3 p-6">
@@ -196,7 +155,7 @@ export function PremiumLanding() {
           <div className="overflow-hidden rounded-[2rem] border border-black/10 bg-white">
             <motion.div animate={{ x: `-${slide * 100}%` }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} className="flex">
               {executif.map((membre) => (
-                <article key={membre.nom} className="min-w-full md:grid md:grid-cols-[1.1fr_0.9fr]">
+                <article key={membre.id} className="min-w-full md:grid md:grid-cols-[1.1fr_0.9fr]">
                   <Image src={membre.image} alt={membre.nom} width={1200} height={900} className="h-72 w-full object-cover md:h-[30rem]" />
                   <div className="flex flex-col justify-center space-y-5 p-8 md:p-12">
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7a0f14]">{membre.role}</p>
@@ -211,7 +170,7 @@ export function PremiumLanding() {
           <div className="mt-6 flex items-center justify-center gap-2">
             {executif.map((membre, index) => (
               <button
-                key={membre.nom}
+                key={membre.id}
                 type="button"
                 aria-label={`Voir ${membre.nom}`}
                 onClick={() => setSlide(index)}

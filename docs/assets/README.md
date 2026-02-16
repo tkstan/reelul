@@ -30,3 +30,41 @@ Actuellement, la landing utilise des images temporaires existantes dans `/public
 1. Ajouter les fichiers listés ci-dessus dans `/public/images`.
 2. Mettre à jour les chemins des `src` dans `components/premium-landing.tsx`.
 3. Vérifier le cadrage mobile/desktop (`object-cover`).
+
+## Ajouter des événements / membres sans modifier le code
+
+Le site charge désormais les données automatiquement depuis des dossiers dédiés :
+
+- `content/calendrier/*.json`
+- `content/executif/*.json`
+
+Pour ajouter une entrée, il suffit d’ajouter un nouveau fichier `.json` dans le bon dossier.
+
+### Format JSON pour le calendrier
+
+```json
+{
+  "id": "slug-unique",
+  "titre": "Titre de l’événement",
+  "date": "Jour mois année",
+  "lieu": "Lieu",
+  "description": "Description courte",
+  "image": "/images/nom-image.jpg",
+  "ordre": 50
+}
+```
+
+### Format JSON pour l’exécutif
+
+```json
+{
+  "id": "slug-unique",
+  "nom": "Prénom Nom",
+  "role": "Rôle",
+  "axe": "Responsabilité principale",
+  "image": "/images/nom-image.jpg",
+  "ordre": 50
+}
+```
+
+Le champ `ordre` sert à classer les cartes/slides dans l’affichage.
